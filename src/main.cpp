@@ -25,15 +25,14 @@ motor RightMotorFront(PORT3, gearSetting::ratio18_1, true);
 motor RightMotorBack(PORT4, gearSetting::ratio18_1, true);
 
 struct MotorSpeeds {
-  int leftFront;
-  int leftBack;
-  int rightFront;
-  int rightBack;
+  int leftspeed;
+  int rightspeed;
 };
 
 int t, A1, A2, A3, A4, L1, L2, R1, R2, X, Y, A, B, LEFT, RIGHT, UP, DOWN,
     last_L1, last_L2, last_R1, last_R2, 
     last_X, last_Y, last_A, last_B, last_LEFT, last_RIGHT, last_UP, last_DOWN;
+    
 void defineController(){
     last_L1 = L1;
     last_L2 = L2;
@@ -97,7 +96,7 @@ MotorSpeeds forward1() {
   }
   int leftSpeed = speedx + speedspin;
   int rightSpeed = speedx - speedspin;
-  MotorSpeeds speeds = {leftSpeed, leftSpeed, rightSpeed, rightSpeed};
+  MotorSpeeds speeds = {leftSpeed, rightSpeed};
   return speeds;
 }
 
@@ -158,16 +157,16 @@ void usercontrol(void) {
     // ........................................................................
     // Insert user code here. This is where you use the joystick values to
     // update your motors, etc.
-    // ........................................................................
+    // ........................................................................s
 
     // wait(20, msec); // Sleep the task for a short amount of time to
     //                 // prevent wasted resources.
     defineController();
     MotorSpeeds forwardSpeeds = forward1();
-    LeftMotorFront.spin(directionType::fwd, forwardSpeeds.leftFront, velocityUnits::pct);
-    LeftMotorBack.spin(directionType::fwd, forwardSpeeds.leftBack, velocityUnits::pct);
-    RightMotorFront.spin(directionType::fwd, forwardSpeeds.rightFront, velocityUnits::pct);
-    RightMotorBack.spin(directionType::fwd, forwardSpeeds.rightBack, velocityUnits::pct);
+    LeftMotorFront.spin(directionType::fwd, forwardSpeeds.leftspeed, velocityUnits::pct);
+    LeftMotorBack.spin(directionType::fwd, forwardSpeeds.leftspeed, velocityUnits::pct);
+    RightMotorFront.spin(directionType::fwd, forwardSpeeds.rightspeed, velocityUnits::pct);
+    RightMotorBack.spin(directionType::fwd, forwardSpeeds.rightspeed, velocityUnits::pct);
 
     // spin1();
     // Example: Use joystick values to control the motors
