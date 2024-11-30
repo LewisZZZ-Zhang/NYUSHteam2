@@ -109,10 +109,10 @@ MotorSpeeds forward1() {
 void motorpair1(){
   if (R1){
     motorpair_1.spin(directionType::fwd, 100, velocityUnits::pct);
-    motorpair_2.spin(directionType::rev, 100, velocityUnits::pct);
+    motorpair_2.spin(directionType::fwd, 100, velocityUnits::pct);
   }else if (R2){
     motorpair_1.spin(directionType::rev, 100, velocityUnits::pct);
-    motorpair_2.spin(directionType::fwd, 100, velocityUnits::pct);
+    motorpair_2.spin(directionType::rev, 100, velocityUnits::pct);
   }else{
     motorpair_1.stop();
     motorpair_2.stop();
