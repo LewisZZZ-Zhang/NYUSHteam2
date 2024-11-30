@@ -19,10 +19,15 @@ brain Brain;
 // define your global instances of motors and other devices here
 
 controller Controller1;
-motor LeftMotorFront(PORT1, gearSetting::ratio18_1, false);
-motor LeftMotorBack(PORT2, gearSetting::ratio18_1, false);
-motor RightMotorFront(PORT3, gearSetting::ratio18_1, true);
-motor RightMotorBack(PORT4, gearSetting::ratio18_1, true);
+motor LeftMotorFront(PORT1, gearSetting::ratio6_1, false);
+motor LeftMotorBack(PORT2, gearSetting::ratio6_1, true);
+motor LeftMotorMid(PORT3, gearSetting::ratio6_1, false);
+motor RightMotorFront(PORT4, gearSetting::ratio6_1, true);
+motor RightMotorBack(PORT5, gearSetting::ratio6_1, false);
+motor RightMotorMid(PORT6, gearSetting::ratio6_1, true);
+motor motorpair_1(PORT7, gearSetting::ratio18_1, true);
+motor motorpair_2(PORT8, gearSetting::ratio18_1, false);
+motor motor2(PORT9, gearSetting::ratio18_1, true);
 
 struct MotorSpeeds {
   int leftspeed;
@@ -30,39 +35,39 @@ struct MotorSpeeds {
 };
 
 int t, A1, A2, A3, A4, L1, L2, R1, R2, X, Y, A, B, LEFT, RIGHT, UP, DOWN,
-    last_L1, last_L2, last_R1, last_R2, 
-    last_X, last_Y, last_A, last_B, last_LEFT, last_RIGHT, last_UP, last_DOWN;
+  last_L1, last_L2, last_R1, last_R2, 
+  last_X, last_Y, last_A, last_B, last_LEFT, last_RIGHT, last_UP, last_DOWN;
     
 void defineController(){
-    last_L1 = L1;
-    last_L2 = L2;
-    last_R1 = R1;
-    last_R2 = R2;
-    last_X = X;
-    last_Y = Y;
-    last_A = A;
-    last_B = B;
-    last_LEFT = LEFT;
-    last_RIGHT = RIGHT;
-    last_UP = UP;
-    last_DOWN = DOWN;
-    t = Brain.timer(vex::timeUnits::msec);
-    A1 = Controller1.Axis1.position(vex::percentUnits::pct);
-    A2 = Controller1.Axis2.position(vex::percentUnits::pct);
-    A3 = Controller1.Axis3.position(vex::percentUnits::pct);
-    A4 = Controller1.Axis4.position(vex::percentUnits::pct);
-    L1 = Controller1.ButtonL1.pressing();
-    L2 = Controller1.ButtonL2.pressing();
-    R1 = Controller1.ButtonR1.pressing();
-    R2 = Controller1.ButtonR2.pressing();
-    X = Controller1.ButtonX.pressing();
-    Y = Controller1.ButtonY.pressing();
-    A = Controller1.ButtonA.pressing();
-    B = Controller1.ButtonB.pressing();
-    LEFT = Controller1.ButtonLeft.pressing();
-    RIGHT = Controller1.ButtonRight.pressing();
-    UP = Controller1.ButtonUp.pressing();
-    DOWN = Controller1.ButtonDown.pressing();
+  last_L1 = L1;
+  last_L2 = L2;
+  last_R1 = R1;
+  last_R2 = R2;
+  last_X = X;
+  last_Y = Y;
+  last_A = A;
+  last_B = B;
+  last_LEFT = LEFT;
+  last_RIGHT = RIGHT;
+  last_UP = UP;
+  last_DOWN = DOWN;
+  t = Brain.timer(vex::timeUnits::msec);
+  A1 = Controller1.Axis1.position(vex::percentUnits::pct);
+  A2 = Controller1.Axis2.position(vex::percentUnits::pct);
+  A3 = Controller1.Axis3.position(vex::percentUnits::pct);
+  A4 = Controller1.Axis4.position(vex::percentUnits::pct);
+  L1 = Controller1.ButtonL1.pressing();
+  L2 = Controller1.ButtonL2.pressing();
+  R1 = Controller1.ButtonR1.pressing();
+  R2 = Controller1.ButtonR2.pressing();
+  X = Controller1.ButtonX.pressing();
+  Y = Controller1.ButtonY.pressing();
+  A = Controller1.ButtonA.pressing();
+  B = Controller1.ButtonB.pressing();
+  LEFT = Controller1.ButtonLeft.pressing();
+  RIGHT = Controller1.ButtonRight.pressing();
+  UP = Controller1.ButtonUp.pressing();
+  DOWN = Controller1.ButtonDown.pressing();
 }
 
 MotorSpeeds forward1() {
@@ -101,10 +106,30 @@ MotorSpeeds forward1() {
 }
 
 
-void spin1(){
-
-
+void motorpair1(){
+  if (R1){
+    motorpair_1.spin(directionType::fwd, 100, velocityUnits::pct);
+    motorpair_2.spin(directionType::rev, 100, velocityUnits::pct);
+  }else if (R2){
+    motorpair_1.spin(directionType::rev, 100, velocityUnits::pct);
+    motorpair_2.spin(directionType::fwd, 100, velocityUnits::pct);
+  }else{
+    motorpair_1.stop();
+    motorpair_2.stop();
+  }
 }
+
+void motor2_1(){
+  if (L1){
+    motor2.spin(directionType::fwd, 100, velocityUnits::pct);
+  }else if (L2){
+    motor2.spin(directionType::rev, 100, velocityUnits::pct);
+  }else{
+    motor2.stop();
+  }
+}
+
+
 /*---------------------------------------------------------------------------*/
 /*                          Pre-Autonomous Functions                         */
 /*                                                                           */
@@ -165,8 +190,12 @@ void usercontrol(void) {
     MotorSpeeds forwardSpeeds = forward1();
     LeftMotorFront.spin(directionType::fwd, forwardSpeeds.leftspeed, velocityUnits::pct);
     LeftMotorBack.spin(directionType::fwd, forwardSpeeds.leftspeed, velocityUnits::pct);
+    LeftMotorMid.spin(directionType::fwd, forwardSpeeds.leftspeed, velocityUnits::pct);
     RightMotorFront.spin(directionType::fwd, forwardSpeeds.rightspeed, velocityUnits::pct);
     RightMotorBack.spin(directionType::fwd, forwardSpeeds.rightspeed, velocityUnits::pct);
+    RightMotorMid.spin(directionType::fwd, forwardSpeeds.rightspeed, velocityUnits::pct);
+    motorpair1();
+    motor2_1();
 
     // spin1();
     // Example: Use joystick values to control the motors
