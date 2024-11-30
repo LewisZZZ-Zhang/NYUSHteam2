@@ -114,8 +114,8 @@ void motorpair1(){
     motorpair_1.spin(directionType::rev, 100, velocityUnits::pct);
     motorpair_2.spin(directionType::rev, 100, velocityUnits::pct);
   }else{
-    motorpair_1.stop();
-    motorpair_2.stop();
+    motorpair_1.stop(vex::brakeType::hold);
+    motorpair_2.stop(vex::brakeType::hold);
   }
 }
 
@@ -125,7 +125,7 @@ void motor2_1(){
   }else if (L2){
     motor2.spin(directionType::rev, 100, velocityUnits::pct);
   }else{
-    motor2.stop();
+    motor2.stop(vex::brakeType::hold);
   }
 }
 
@@ -188,12 +188,28 @@ void usercontrol(void) {
     //                 // prevent wasted resources.
     defineController();
     MotorSpeeds forwardSpeeds = forward1();
-    LeftMotorFront.spin(directionType::fwd, forwardSpeeds.leftspeed, velocityUnits::pct);
-    LeftMotorBack.spin(directionType::fwd, forwardSpeeds.leftspeed, velocityUnits::pct);
-    LeftMotorMid.spin(directionType::fwd, forwardSpeeds.leftspeed, velocityUnits::pct);
-    RightMotorFront.spin(directionType::fwd, forwardSpeeds.rightspeed, velocityUnits::pct);
-    RightMotorBack.spin(directionType::fwd, forwardSpeeds.rightspeed, velocityUnits::pct);
-    RightMotorMid.spin(directionType::fwd, forwardSpeeds.rightspeed, velocityUnits::pct);
+
+    if ((forwardSpeeds.leftspeed != 0 )|| (forwardSpeeds.rightspeed != 0)){
+      LeftMotorFront.spin(directionType::fwd, forwardSpeeds.leftspeed, velocityUnits::pct);
+      LeftMotorBack.spin(directionType::fwd, forwardSpeeds.leftspeed, velocityUnits::pct);
+      LeftMotorMid.spin(directionType::fwd, forwardSpeeds.leftspeed, velocityUnits::pct);
+      RightMotorFront.spin(directionType::fwd, forwardSpeeds.rightspeed, velocityUnits::pct);
+      RightMotorBack.spin(directionType::fwd, forwardSpeeds.rightspeed, velocityUnits::pct);
+      RightMotorMid.spin(directionType::fwd, forwardSpeeds.rightspeed, velocityUnits::pct);
+    }else{
+      LeftMotorFront.stop(vex::brakeType::hold);
+      LeftMotorBack.stop(vex::brakeType::hold);
+      LeftMotorMid.stop(vex::brakeType::hold);
+      RightMotorFront.stop(vex::brakeType::hold);
+      RightMotorBack.stop(vex::brakeType::hold);
+      RightMotorMid.stop(vex::brakeType::hold);
+    }
+    // LeftMotorFront.spin(directionType::fwd, forwardSpeeds.leftspeed, velocityUnits::pct);
+    // LeftMotorBack.spin(directionType::fwd, forwardSpeeds.leftspeed, velocityUnits::pct);
+    // LeftMotorMid.spin(directionType::fwd, forwardSpeeds.leftspeed, velocityUnits::pct);
+    // RightMotorFront.spin(directionType::fwd, forwardSpeeds.rightspeed, velocityUnits::pct);
+    // RightMotorBack.spin(directionType::fwd, forwardSpeeds.rightspeed, velocityUnits::pct);
+    // RightMotorMid.spin(directionType::fwd, forwardSpeeds.rightspeed, velocityUnits::pct);
     motorpair1();
     motor2_1();
 
