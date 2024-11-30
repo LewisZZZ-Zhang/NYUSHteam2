@@ -120,9 +120,9 @@ void motorpair1(){
 }
 
 void motor2_1(){
-  if (L1){
+  if (X){
     motor2.spin(directionType::fwd, 100, velocityUnits::pct);
-  }else if (L2){
+  }else if (Y){
     motor2.spin(directionType::rev, 100, velocityUnits::pct);
   }else{
     motor2.stop(vex::brakeType::hold);
