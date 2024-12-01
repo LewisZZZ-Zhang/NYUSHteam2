@@ -99,8 +99,8 @@ MotorSpeeds forward1() {
     speedx = speedx * 0.6;
     speedspin = speedspin * 0.6;
   }
-  int leftSpeed = speedx + speedspin;
-  int rightSpeed = speedx - speedspin;
+  int leftSpeed = speedx - speedspin;
+  int rightSpeed = speedx + speedspin;
   MotorSpeeds speeds = {leftSpeed, rightSpeed};
   return speeds;
 }
