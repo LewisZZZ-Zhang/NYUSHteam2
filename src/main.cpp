@@ -25,9 +25,9 @@ motor LeftMotorMid(PORT3, gearSetting::ratio6_1, false);
 motor RightMotorFront(PORT4, gearSetting::ratio6_1, true);
 motor RightMotorBack(PORT5, gearSetting::ratio6_1, false);
 motor RightMotorMid(PORT6, gearSetting::ratio6_1, true);
-motor motorpair_1(PORT7, gearSetting::ratio18_1, true);
+motor motorpair_1(PORT9, gearSetting::ratio18_1, true);
 motor motorpair_2(PORT8, gearSetting::ratio18_1, false);
-motor motor2(PORT9, gearSetting::ratio18_1, true);
+motor motor2(PORT7, gearSetting::ratio18_1, true);
 
 struct MotorSpeeds {
   int leftspeed;
