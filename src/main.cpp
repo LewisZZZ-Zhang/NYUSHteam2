@@ -139,6 +139,16 @@ void lockRight(void) {
   RightMotorMid.stop(vex::brakeType::hold);
   RightMotorBack.stop(vex::brakeType::hold);
 }
+void moveLeft(int speed) {
+  LeftMotorFront.spin(vex::directionType::fwd, speed, vex::velocityUnits::pct);
+  LeftMotorMid.spin(vex::directionType::fwd, speed, vex::velocityUnits::pct);
+  LeftMotorBack.spin(vex::directionType::fwd, speed, vex::velocityUnits::pct);
+}
+void moveRight(int speed) {
+  RightMotorFront.spin(vex::directionType::fwd, speed, vex::velocityUnits::pct);
+  RightMotorMid.spin(vex::directionType::fwd, speed, vex::velocityUnits::pct);
+  RightMotorBack.spin(vex::directionType::fwd, speed, vex::velocityUnits::pct);
+}
 
 
 void motorpair1(){
@@ -227,19 +237,11 @@ void usercontrol(void) {
     defineController();
     MotorSpeeds forwardSpeeds = forward1();
     if ((forwardSpeeds.leftspeed != 0 )|| (forwardSpeeds.rightspeed != 0)){
-      LeftMotorFront.spin(directionType::fwd, forwardSpeeds.leftspeed, velocityUnits::pct);
-      LeftMotorBack.spin(directionType::fwd, forwardSpeeds.leftspeed, velocityUnits::pct);
-      LeftMotorMid.spin(directionType::fwd, forwardSpeeds.leftspeed, velocityUnits::pct);
-      RightMotorFront.spin(directionType::fwd, forwardSpeeds.rightspeed, velocityUnits::pct);
-      RightMotorBack.spin(directionType::fwd, forwardSpeeds.rightspeed, velocityUnits::pct);
-      RightMotorMid.spin(directionType::fwd, forwardSpeeds.rightspeed, velocityUnits::pct);
+      moveLeft(forwardSpeeds.leftspeed);
+      moveRight(forwardSpeeds.rightspeed);
     }else{
-      LeftMotorFront.stop(vex::brakeType::hold);
-      LeftMotorBack.stop(vex::brakeType::hold);
-      LeftMotorMid.stop(vex::brakeType::hold);
-      RightMotorFront.stop(vex::brakeType::hold);
-      RightMotorBack.stop(vex::brakeType::hold);
-      RightMotorMid.stop(vex::brakeType::hold);
+      lockLeft();
+      lockRight();
     }
     motorpair1();
     motor2_1();
