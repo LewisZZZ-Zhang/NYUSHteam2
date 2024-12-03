@@ -19,15 +19,23 @@ brain Brain;
 // define your global instances of motors and other devices here
 
 controller Controller1;
-motor LeftMotorFront(PORT1, gearSetting::ratio6_1, false);
-motor LeftMotorBack(PORT2, gearSetting::ratio6_1, true);
-motor LeftMotorMid(PORT3, gearSetting::ratio6_1, false);
-motor RightMotorFront(PORT4, gearSetting::ratio6_1, true);
-motor RightMotorBack(PORT5, gearSetting::ratio6_1, false);
-motor RightMotorMid(PORT6, gearSetting::ratio6_1, true);
+
+motor LeftMotorFront(PORT1, gearSetting::ratio6_1, true);
+motor LeftMotorMid(PORT2, gearSetting::ratio6_1, false);
+motor LeftMotorBack(PORT3, gearSetting::ratio6_1, true);
+
+motor RightMotorFront(PORT4, gearSetting::ratio6_1, false);
+motor RightMotorMid(PORT5, gearSetting::ratio6_1, true);
+motor RightMotorBack(PORT6, gearSetting::ratio6_1, false);
+
 motor motorpair_1(PORT9, gearSetting::ratio18_1, true);
 motor motorpair_2(PORT8, gearSetting::ratio18_1, false);
 motor motor2(PORT7, gearSetting::ratio18_1, true);
+
+
+pneumatics Piston1(Brain.ThreeWirePort.A);
+pneumatics Piston2(Brain.ThreeWirePort.B);
+
 
 struct MotorSpeeds {
   int leftspeed;
@@ -95,14 +103,39 @@ MotorSpeeds forward1() {
 // }
   int speedx = A3;
   int speedspin = A1;
-  if (!L2) {
-    speedx = speedx * 0.6;
-    speedspin = speedspin * 0.6;
+  if (true) {
+    speedx = speedx * 0.5;
+    speedspin = speedspin * 0.5;
   }
   int leftSpeed = speedx + speedspin;
   int rightSpeed = speedx - speedspin;
   MotorSpeeds speeds = {leftSpeed, rightSpeed};
   return speeds;
+}
+
+void setPiston_1 (bool _input) {
+  if (_input) {
+    Piston1.set(false);
+  }
+  else {
+    Piston1.set(true);
+  }
+}
+void setPiston_2 (bool _input) {
+  if (_input) {
+    Piston2.set(false);
+  }
+  else {
+    Piston2.set(true);
+  }
+}
+void lockLeft(void) {
+  LeftMotorFront.stop(vex::brakeType::hold);
+  LeftMotorBack.stop(vex::brakeType::hold);
+}
+void lockRight(void) {
+  RightMotorFront.stop(vex::brakeType::hold);
+  RightMotorBack.stop(vex::brakeType::hold);
 }
 
 
@@ -141,6 +174,8 @@ void motor2_1(){
 /*---------------------------------------------------------------------------*/
 
 void pre_auton(void) {
+  setPiston_1(false);
+  setPiston_2(false);
 
   // All activities that occur before the competition starts
   // Example: clearing encoders, setting servo positions, ...
@@ -174,6 +209,7 @@ void autonomous(void) {
 
 void usercontrol(void) {
   // User control code here, inside the loop
+  bool statepis1 = 0;
   while (1) {
     // This is the main execution loop for the user control program.
     // Each time through the loop your program should update motor + servo
@@ -188,7 +224,6 @@ void usercontrol(void) {
     //                 // prevent wasted resources.
     defineController();
     MotorSpeeds forwardSpeeds = forward1();
-
     if ((forwardSpeeds.leftspeed != 0 )|| (forwardSpeeds.rightspeed != 0)){
       LeftMotorFront.spin(directionType::fwd, forwardSpeeds.leftspeed, velocityUnits::pct);
       LeftMotorBack.spin(directionType::fwd, forwardSpeeds.leftspeed, velocityUnits::pct);
@@ -213,6 +248,17 @@ void usercontrol(void) {
     motorpair1();
     motor2_1();
 
+
+
+
+    if(L1 && !last_L1) {
+      statepis1 = !statepis1;
+    }
+    setPiston_1(statepis1);
+    setPiston_2(statepis1);
+
+
+    // setPiston_1(statepis1);
     // spin1();
     // Example: Use joystick values to control the motors
 
