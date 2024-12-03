@@ -131,10 +131,12 @@ void setPiston_2 (bool _input) {
 }
 void lockLeft(void) {
   LeftMotorFront.stop(vex::brakeType::hold);
+  LeftMotorMid.stop(vex::brakeType::hold);
   LeftMotorBack.stop(vex::brakeType::hold);
 }
 void lockRight(void) {
   RightMotorFront.stop(vex::brakeType::hold);
+  RightMotorMid.stop(vex::brakeType::hold);
   RightMotorBack.stop(vex::brakeType::hold);
 }
 
@@ -239,28 +241,18 @@ void usercontrol(void) {
       RightMotorBack.stop(vex::brakeType::hold);
       RightMotorMid.stop(vex::brakeType::hold);
     }
-    // LeftMotorFront.spin(directionType::fwd, forwardSpeeds.leftspeed, velocityUnits::pct);
-    // LeftMotorBack.spin(directionType::fwd, forwardSpeeds.leftspeed, velocityUnits::pct);
-    // LeftMotorMid.spin(directionType::fwd, forwardSpeeds.leftspeed, velocityUnits::pct);
-    // RightMotorFront.spin(directionType::fwd, forwardSpeeds.rightspeed, velocityUnits::pct);
-    // RightMotorBack.spin(directionType::fwd, forwardSpeeds.rightspeed, velocityUnits::pct);
-    // RightMotorMid.spin(directionType::fwd, forwardSpeeds.rightspeed, velocityUnits::pct);
     motorpair1();
     motor2_1();
 
 
 
 
-    if(L1 && !last_L1) {
-      statepis1 = !statepis1;
-    }
-    setPiston_1(statepis1);
-    setPiston_2(statepis1);
-
-
+    // if(L1 && !last_L1) {
+    //   statepis1 = !statepis1;
+    // }
     // setPiston_1(statepis1);
-    // spin1();
-    // Example: Use joystick values to control the motors
+    // setPiston_2(statepis1);
+
 
 
     // Don't hog the CPU
