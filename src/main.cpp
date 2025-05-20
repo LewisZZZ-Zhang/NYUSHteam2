@@ -249,10 +249,10 @@ void usercontrol(void) {
 
 
 
-    // if(L1 && !last_L1) {
-    //   statepis1 = !statepis1;
-    // }
-    // setPiston_1(statepis1);
+    if(L1 && !last_L1) {
+      statepis1 = !statepis1;
+    }
+    setPiston_1(statepis1);
     // setPiston_2(statepis1);
 
 
